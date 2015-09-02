@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<!-- SITE TITLE -->
+	<title>Say-Hi</title>
+
+	<!-- STYLESHEETS -->
+	<link rel="stylesheet" href="/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/templatemo-style.css">
+	<link href='//fonts.googleapis.com/css?family=Raleway:400,300,600,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Frijole' rel='stylesheet' type='text/css'>
+</head>
+
+<body data-spy="scroll" data-target="#rock-navigation">
+	
+	<!-- START HOME -->
+	<section id="home" class="templatemo-home">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2 col-sm-1"></div>
+				<div class="col-md-7 col-sm-10">
+					<h1 class="tm-home-title">Say-Hi</h1>
+					<h2 class="tm-home-subtitle">Chatroom</h2>
+					<h3 class="tm-home-description">你好|| Hola || नमस्ते || salut, Chatting now!</h3>
+					<form class="form-horizontal templatemo-login-form-2" role="form" onsubmit="return validform(this)" action="/chat" method="post">	            		           	           
+						<div class="form-group">
+							<label for="username" class="control-label">Username</label>
+							<div class="templatemo-input-icon-container">
+								<i class="fa fa-user"></i>
+								<input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+							</div>	
+							<div class="col-md-offset-3">
+								<input type="submit" value="LOG IN" class="btn btn-warning"> 
+							</div>  
+						</div>
+					</form>
+					
+				</div>
+			</div>
+		</section>
+		<!-- END HOME -->
+		<script type="text/javascript">
+			function validRequired(field,alertxt)
+			{
+				with(field)
+				{
+					var trimval;
+					if(value!=null){
+						trimval = value.trim();
+					}
+					if(trimval==null||trimval=="")
+					{
+						alert(alertxt);return false;
+					}
+					else
+					{
+						return true;
+					}
+				}
+			}
+			function validform(thisform)
+			{
+				with(thisform)
+				{
+					if(validRequired(username,"username is not correct")==false)
+					{
+						username.focus();
+						return false;
+					}
+				}
+			}
+		</script>
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+	</body>
+	</html>
