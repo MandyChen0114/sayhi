@@ -3001,10 +3001,11 @@ select[multiple].input-lg {
 .btn {
   display: inline-block;
   padding: 6px 12px;
-  margin-bottom: 0;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857143;
+  margin-right: 10px;
+  font-size: 15px;
+  font-weight: 100;
+  line-height: 1.5;
+  width: 80px;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
@@ -3255,8 +3256,8 @@ fieldset[disabled] .btn-success.active {
 }
 .btn-info {
   color: #fff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: rgb(130, 224, 255);
+  border-color: #fff;
 }
 .btn-info:focus,
 .btn-info.focus {

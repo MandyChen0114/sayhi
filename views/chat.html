@@ -1,59 +1,115 @@
 <!doctype html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
   <title>Sayhi</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link href='https://fonts.googleapis.com/css?family=Mountains+of+Christmas' rel='stylesheet' type='text/css'>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font: 13px Helvetica, Arial; }
-    form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-    form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-    form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-    #messages { list-style-type: none; margin: 0; padding: 0; }
-    #messages li { padding: 5px 10px; }
-    #messages li:nth-child(odd) { background: #eee; }
+    body { font-weight: 100; }
+    form { background: #eee; padding: 2px; position: fixed; bottom: 0; width: 100%; line-height: 15px;}
+    form input { border: 0; padding: 10px; width: 92%;}
+    form button { width: 8%; background: rgb(130, 224, 255); border: none; padding: 10px;letter-spacing: 1px;color: #fff; }
+    #messages {list-style-type: none; margin-top: 50px; margin-bottom:40px;padding: 0; font-size: 16px;line-height: 20px;}
+    #messages li1 {padding: 5px 10px;font-weight: 200;font-family: 'Mountains+of+Christmas',cursive;line-height: 18px; }
+    #messages li2{ padding: 5px 40px; font-weight: 100;background: #eef9ff; display: list-item;}
+    #messages li3{padding: 5px 10px;font-weight: 200;font-family: 'Mountains+of+Christmas',cursive;display: list-item;text-align: center;}
+    #messages li4 {padding: 5px 10px;font-weight: 200;font-size: 12px; }
+    #messages li5{ padding: 5px 40px; font-weight: 100;background: #eee; display: list-item;}
+    nav{height: 50px;}
+    nav p1{margin-top: 30px;font-size:18px;font-weight: 100;}
+    nav p2{margin-top: 30px;font-size:18px;font-family: 'Mountains+of+Christmas',cursive;}
+    nav button{margin-top: 8px;background:rgb(130, 224, 255);border:none; letter-spacing: 1px;color: #fff;font-weight: 100;}
   </style>
+
 </head>
 <body>
   <ul id="messages"></ul>
   <form action="">
     <input id="m" autocomplete="off" /><button>Send</button>
   </form>
+  <script src="/js/bootstrap.min.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  
   <script>
-  // var $messages = $('.messages');
-  var socket = io();
-  username = getCookie("username");
+    var socket = io();
+    username = getCookie("username");
 
-  $('form').submit(function(){
-    socket.emit('msg_username',username);
-    socket.emit('new message', $('#m').val());
-    $('#m').val('');
-    return false;
-  });
+    socket.emit('newuser',username);
+    $('#messages').append($('<li3>').text("Chat history"));
+    socket.on('history',function(row){
+      $('#messages').append($('<li1>').text(row.username));
+      $('#messages').append($('<li4>').text("("+row.time+")"));
+      $('#messages').append($('<li5>').text(row.msg));
+    });
 
-  socket.on('msg_username',function(username) {
-    $('#messages').append($('<li>').text(username));
-  });
-  socket.on('new message',function(msg){
-    $('#messages').append($('<li>').text(msg));
-  });
+    $('form').submit(function(){
+      var msg_data = {
+        "username":username,
+        "msg":$('#m').val(),
+        "time":new Date().toLocaleString()
+      };
 
-  function getCookie(c_name)
-  {
-    if (document.cookie.length>0)
+      socket.emit("new message", msg_data);
+      
+      $('#m').val('');
+      return false;
+    });
+
+    socket.on('newuser',function(newuser){
+      $('#messages').append($('<li3>').text(newuser+" has joined in this room"));
+
+    });
+
+    socket.on('new message',function(msg_data){
+      var showname=msg_data.username;
+      if(showname==username){
+       showname="Me";
+     }
+
+     $('#messages').append($('<li1>').text(showname));
+     $('#messages').append($('<li4>').text("("+msg_data.time+")"));
+     $('#messages').append($('<li2>').text(msg_data.msg));
+   });
+
+    socket.on('userleft',function(leftuser){
+      $('#messages').append($('<li3>').text(leftuser+" has left"));
+    });
+    function getCookie(c_name)
     {
-      c_start=document.cookie.indexOf(c_name + "=")
-      if (c_start!=-1)
-      { 
-        c_start=c_start + c_name.length+1 
-        c_end=document.cookie.indexOf(";",c_start)
-        if (c_end==-1) c_end=document.cookie.length
-          return unescape(document.cookie.substring(c_start,c_end))
-      } 
+      if (document.cookie.length>0)
+      {
+        c_start=document.cookie.indexOf(c_name + "=")
+        if (c_start!=-1)
+        { 
+          c_start=c_start + c_name.length+1 
+          c_end=document.cookie.indexOf(";",c_start)
+          if (c_end==-1) c_end=document.cookie.length
+            return unescape(document.cookie.substring(c_start,c_end))
+        } 
+      }
+      return ""
     }
-    return ""
-  }
-</script>
+  </script>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid" style="line-height:50px">
+      <div class="navbar-header">
+        <p1> Welcome to </p1>
+        <p2>Say-Hi Chatroom </p2>
+        <p1>!</p1>
+      </div>
+      <div class="nav navbar-nav navbar-right">
+       <a href="/" class="btn btn-info">Log out</a>
+     </div>
+   </div>
+ </nav>
+ 
 </body>
 </html>
